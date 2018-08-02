@@ -10,7 +10,6 @@ Game.createCanvas({
 	y: 0,
 	width: 500,
 	height: 500,
-	scale: true,
 	id: 'mainCanvas'
 });
 
@@ -48,8 +47,8 @@ Game.draw((bounds, id) => {
 });
 
 Game.registerInputs({
-	UP: Keyboard.UP,
-	DOWN: Keyboard.DOWN,
+	UP: Keyboard.Up,
+	DOWN: Keyboard.Down,
 	CLICK: Mouse.ClickLeft
 });
 

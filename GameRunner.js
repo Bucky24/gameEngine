@@ -11,6 +11,8 @@ if (!gameFile) {
 	process.exit(1);
 }
 
+const devTools = true;
+
 app.on('ready', () => {
 	const fullFile = path.resolve(gameFile);
 	let mainWindow;
@@ -28,9 +30,10 @@ app.on('ready', () => {
 	// do setup here
 	global.Game = {
 		createWindow: ({ x, y, width, height }) => {
+			const useWidth = devTools ? width + 500 : width;
 			mainWindow = new BrowserWindow({
 				height,
-				width: width + 500
+				width: useWidth
 			});
 
 			const url = require('url').format({
@@ -51,22 +54,29 @@ app.on('ready', () => {
 				}
 			});
 			
-		    mainWindow.webContents.openDevTools();
+			if (devTools) {
+		    	mainWindow.webContents.openDevTools();
+			}
 		},
 		createCanvas: (params) => {
-			panels.push(params);
+			const defaultParams = {
+				scale: true
+			};
+			panels.push(Object.assign({}, defaultParams, params));
 		},
 		mainLoop: (cb) => {
 			registerEventHandler('mainLoop', cb);
 		},
 		draw: (cb) => {
 			registerEventHandler('draw', cb);
-		}
-		
+		},
+		registerInputs: () => {}
 	};
 	
 	let originX = 0;
 	let originY = 0;
+	let useWR = 1;
+	let useHR = 1;
 	global.Draw = {
 		setOrigin: (x, y) => {
 			originX = x;
@@ -75,10 +85,10 @@ app.on('ready', () => {
 		drawRect: (x, y, x2, y2, color, fill) => {
 			sendMessage('draw', {
 				type: 'rect',
-				x1: x + originX * widthRatio,
-				y1: y + originY * heightRatio,
-				x2: x2 + originX * widthRatio,
-				y2: y2 + originY * heightRatio,
+				x1: x * useWR + originX * useWR,
+				y1: y * useHR + originY * useHR,
+				x2: x2 * useWR+ originX * useWR,
+				y2: y2 * useHR + originY * useHR,
 				color,
 				fill
 			});
@@ -88,6 +98,15 @@ app.on('ready', () => {
 			originY = 0;
 		}
 		
+	};
+	
+	global.Keyboard = {
+		Up: 0,
+		Down: 0
+	};
+	
+	global.Mouse = {
+		ClickLeft: 0
 	};
 	
 	const sendMessage = (event, data) => {
@@ -135,6 +154,8 @@ app.on('ready', () => {
 	});
 	
 	const handleDrawing = () => {
+		useWR = 1;
+		useHR = 1;
 		Draw.drawRect(0, 0, width, height, "#fff", true);
 		panels.forEach((panel) => {
 			let realWidth = panel.width;
@@ -143,6 +164,11 @@ app.on('ready', () => {
 			if (panel.scale) {
 				realWidth *= widthRatio;
 				realHeight *= heightRatio;
+				useWR = widthRatio;
+				useHR = heightRatio;
+			} else {
+				useWR = 1;
+				useHR = 1;
 			}
 			
 			Draw.setOrigin(panel.x, panel.y);
