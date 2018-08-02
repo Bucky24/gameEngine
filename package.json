@@ -2,9 +2,15 @@
 	"name": "gameEngine",
 	"version": "0.0.1",
 	"description": "A game engine!",
+	"scripts": {
+		"GameRunner": "./runGame.sh"
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Bucky24/gameEngine.git"
+	},
+	"bin": {
+		"GameRunner": "./runGame.sh"
 	},
 	"dependencies": {
 		"electron": "2.0.4"
