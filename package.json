@@ -1,4 +1,11 @@
 {
+	"name": "gameEngine",
+	"version": "0.0.1",
+	"description": "A game engine!",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Bucky24/gameEngine.git"
+	},
 	"dependencies": {
 		"electron": "2.0.4"
 	}
