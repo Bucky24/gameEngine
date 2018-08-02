@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<style>
+	html, body {
+		margin: 0;
+		height: 100%;
+		overflow: hidden;
+	}
+</style>
+<body>
+	<canvas id="canvas"></canvas>
+</body>
+<script>
+	const { ipcRenderer } = window.require('electron');
+	const canvas = document.getElementById('canvas');
+	let startingWidth;
+	let startingHeight;
+	let widthRatio;
+	let heightRatio;
+	
+	ipcRenderer.on('command', (event, data) => {
+		switch (data.event) {
+		case 'init':
+			const { width, height } = data.params;
+			startingWidth = width;
+			startingHeight = height;
+			resize();
+			break;
+		}
+	});
+	
+	ipcRenderer.on('draw', (event, data) => {
+		const ctx = canvas.getContext('2d');
+		//console.log('got draw', data);
+		ctx.save();
+		switch (data.type) {
+		case 'rect':
+			let { fill } = data;
+			const { color, x1, y1, x2, y2 } = data;
+			if (fill === undefined) fill = true;
+			ctx.fillStyle = color;
+			ctx.strokeStyle = color;
+			ctx.beginPath();
+			ctx.moveTo(x1,y1);
+			ctx.lineTo(x2,y1);
+			ctx.lineTo(x2,y2);
+			ctx.lineTo(x1,y2);
+			ctx.closePath();
+			if (fill) ctx.fill();
+			ctx.stroke();
+			break;
+		}
+		ctx.restore();
+	})
+	
+	ipcRenderer.send('ready');
+	
+	function resize() {
+		var elem = document.getElementsByTagName("body")[0];
+
+		canvas.width = elem.clientWidth;
+		canvas.height = elem.clientHeight;
+		
+		//console.log(canvas.width, canvas.height);
+		
+		widthRatio = canvas.width / startingWidth;
+		heightRatio = canvas.height / startingHeight;
+		
+		ipcRenderer.send('resize', {
+			width: canvas.width,
+			height: canvas.height,
+			widthRatio,
+			heightRatio
+		});
+	}
+	
+	window.addEventListener("resize", resize);
+</script>
+</html>
