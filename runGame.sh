@@ -1,3 +1,3 @@
 #!/bin/bash
 
-electron GameRunner.js $1
+./node_modules/bin/electron ./GameRunner.js $1
