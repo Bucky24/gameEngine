@@ -118,8 +118,17 @@ app.on('ready', () => {
 		clearOrigin: () => {
 			originX = 0;
 			originY = 0;
+		},
+		drawLine: (x, y, x2, y2, color) => {
+			sendMessage('draw', {
+				type: 'line',
+				x1: x * useWR + originX * useWR,
+				y1: y * useHR + originY * useHR,
+				x2: x2 * useWR+ originX * useWR,
+				y2: y2 * useHR + originY * useHR,
+				color
+			});
 		}
-		
 	};
 	
 	global.Keyboard = {

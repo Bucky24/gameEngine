@@ -15,6 +15,11 @@ const getTileIndex = (tiles, x, y) => {
 
 Game.registerPlugin('Map', {
 	createMap: (mapObj) => {
+		const defaults = {
+			width: 10,
+			height: 10
+		};
+		mapObj = Object.assign({}, defaults, mapObj);
 		const { id } = mapObj;
 		if (maps[id]) {
 			throw new Error(`Map with id ${id} already exists`);
@@ -35,6 +40,30 @@ Game.registerPlugin('Map', {
 				const typeCb = mapObj.tileTypes[tile.type];
 				typeCb(x, y, x + mapObj.cellSize, y + mapObj.cellSize);
 			});
+			for (let i=0;i<mapObj.width;i++) {
+				Draw.drawLine(
+					i * mapObj.cellSize,
+					0,
+					i * mapObj.cellSize,
+					mapObj.height * mapObj.cellSize,
+					"#000"
+				);
+			}
+			for (let i=0;i<mapObj.height;i++) {
+				Draw.drawLine(
+					0,
+					i * mapObj.cellSize,
+					mapObj.width * mapObj.cellSize,
+					i * mapObj.cellSize,
+					"#000"
+				);
+			}
+			Draw.drawRect(
+				0, 0,
+				mapObj.width * mapObj.cellSize, mapObj.height * mapObj.cellSize,
+				"#000",
+				false
+			);
 			
 			Draw.drawRect(0, 0, bounds.width, bounds.height, "#000", false);
 		});

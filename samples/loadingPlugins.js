@@ -28,7 +28,9 @@ Game.createCanvas({
 Map.createMap({
 	id: 'mainMap',
 	canvasId: 'mapCanvas',
-	cellSize: 10
+	cellSize: 25,
+	width: 15,
+	height: 15
 });
 
 Map.registerTileType('mainMap', 'grass', (x, y, x2, y2) => {
