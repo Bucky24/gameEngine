@@ -1,3 +1,5 @@
+Game.debug(true);
+
 Game.createWindow({
 	x: 0, 
 	y: 0,

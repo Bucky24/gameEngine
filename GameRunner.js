@@ -12,7 +12,7 @@ if (!gameFile) {
 	process.exit(1);
 }
 
-const devTools = true;
+let devTools = false;
 
 app.on('ready', () => {
 	const fullFile = path.resolve(gameFile);
@@ -30,6 +30,9 @@ app.on('ready', () => {
 	
 	// do setup here
 	global.Game = {
+		debug: (debug) => {
+			devTools = debug;
+		},
 		createWindow: ({ x, y, width, height }) => {
 			const useWidth = devTools ? width + 500 : width;
 			mainWindow = new BrowserWindow({

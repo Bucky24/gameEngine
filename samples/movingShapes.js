@@ -1,3 +1,5 @@
+Game.debug(true);
+
 Game.createWindow({
 	x: 0, 
 	y: 0,
@@ -50,8 +52,4 @@ Game.registerInputs({
 	UP: Keyboard.Up,
 	DOWN: Keyboard.Down,
 	CLICK: Mouse.ClickLeft
-});
-
-Game.onInput((inputCode, extraData) => {
-	
 });
