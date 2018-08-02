@@ -42,7 +42,7 @@ Game.mainLoop((tick) => {
 	// some logic here
 });
 
-Game.draw((bounds, id) => {
+Game.draw("mainCanvas", (bounds) => {
 	Draw.drawRect(x, y, x+10, y+10, "#f00", true);
 });
 

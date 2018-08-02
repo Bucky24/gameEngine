@@ -3,6 +3,7 @@ const ipc = electron.ipcMain;
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
+const fs = require('fs');
 
 const gameFile = process.argv[2];
 
@@ -67,10 +68,28 @@ app.on('ready', () => {
 		mainLoop: (cb) => {
 			registerEventHandler('mainLoop', cb);
 		},
-		draw: (cb) => {
-			registerEventHandler('draw', cb);
+		draw: (id, cb) => {
+			registerEventHandler(`draw_${id}`, cb);
 		},
-		registerInputs: () => {}
+		registerInputs: () => {},
+		loadPlugin: (pluginName) => {
+			if (pluginName.indexOf("std::") === 0) {
+				const realPlugin = pluginName.substring(5);
+				
+				const file = path.resolve(__dirname, 'plugins', `${realPlugin}.js`);
+				if (!fs.existsSync(file)) {
+					throw new Error(`Standard plugin ${realPlugin} not found`);
+				}
+				
+				console.log('Loading plugin', realPlugin);
+				require(file);
+			} else {
+				throw new Error('outside plugins not handled yet');
+			}
+		},
+		registerPlugin: (name, object) => {
+			global[name] = object;
+		}
 	};
 	
 	let originX = 0;
@@ -130,7 +149,12 @@ app.on('ready', () => {
 	const triggerEvent = (event, data) => {
 		if (eventFunctions[event]) {
 			eventFunctions[event].forEach((cb) => {
-				cb.apply(null, data);
+				try {
+					cb.apply(null, data);
+				} catch (error) {
+					console.log(`Unable to fire event ${event}: ${error.message}`);
+					throw error;
+				}
 			});
 		}
 	};
@@ -144,12 +168,13 @@ app.on('ready', () => {
 		windowReady = true;
 		
 		mainLoopInterval = setInterval(() => {
-			if (eventFunctions['mainLoop'].length > 0) {
+			if (eventFunctions['mainLoop'] &&
+				eventFunctions['mainLoop'].length > 0
+			) {
 				triggerEvent('mainLoop', [tick]);
-				tick ++;
-				
-				handleDrawing();
 			}
+			tick ++;
+			handleDrawing();
 		}, 100);
 	});
 	
@@ -172,12 +197,11 @@ app.on('ready', () => {
 			}
 			
 			Draw.setOrigin(panel.x, panel.y);
-			triggerEvent('draw', [
+			triggerEvent(`draw_${panel.id}`, [
 				{
 					width: realWidth,
 					height: realHeight
-				},
-				panel.id
+				}
 			]);
 		});
 		Draw.clearOrigin();
@@ -194,7 +218,12 @@ app.on('ready', () => {
 	
 	console.log('Loading game from ', fullFile);
 
-	require(fullFile);
+	try {
+		require(fullFile);
+	} catch (error) {
+		console.error(error);
+		app.quit();
+	}
 });
 
 process.on('uncaughtException', (error) => {
