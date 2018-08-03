@@ -27,6 +27,7 @@ app.on('ready', () => {
 	let height;
 	let widthRatio;
 	let heightRatio;
+	const doubleBuffering = true;
 	
 	// do setup here
 	global.Game = {
@@ -99,13 +100,18 @@ app.on('ready', () => {
 	let originY = 0;
 	let useWR = 1;
 	let useHR = 1;
+	let activeCanvas = 'canvas';
 	global.Draw = {
 		setOrigin: (x, y) => {
 			originX = x;
 			originY = y;
 		},
+		setCanvas: (canvas) => {
+			activeCanvas = canvas;
+		},
 		drawRect: (x, y, x2, y2, color, fill) => {
 			sendMessage('draw', {
+				canvas: activeCanvas,
 				type: 'rect',
 				x1: x * useWR + originX * useWR,
 				y1: y * useHR + originY * useHR,
@@ -121,12 +127,31 @@ app.on('ready', () => {
 		},
 		drawLine: (x, y, x2, y2, color) => {
 			sendMessage('draw', {
+				canvas: activeCanvas,
 				type: 'line',
 				x1: x * useWR + originX * useWR,
 				y1: y * useHR + originY * useHR,
 				x2: x2 * useWR+ originX * useWR,
 				y2: y2 * useHR + originY * useHR,
 				color
+			});
+		},
+		drawPattern: (patternId, x, y, width, height) => {
+			sendMessage('draw', {
+				canvas: activeCanvas,
+				type: 'drawPattern',
+				id: patternId,
+				x,
+				y,
+				width,
+				height
+			});
+		},
+		savePattern: (patternId) => {
+			sendMessage('draw', {
+				canvas: activeCanvas,
+				type: 'savePattern',
+				id: patternId
 			});
 		}
 	};
@@ -193,6 +218,9 @@ app.on('ready', () => {
 	const handleDrawing = () => {
 		useWR = 1;
 		useHR = 1;
+		if (doubleBuffering) {
+			Draw.setCanvas('canvas2');
+		}
 		Draw.drawRect(0, 0, width, height, "#fff", true);
 		panels.forEach((panel) => {
 			let realWidth = panel.width;
@@ -207,16 +235,37 @@ app.on('ready', () => {
 				useWR = 1;
 				useHR = 1;
 			}
-			
-			Draw.setOrigin(panel.x, panel.y);
+			// clear rectangle for the thing
+			Draw.drawRect(0, 0, width, height, "#fff", true);
 			triggerEvent(`draw_${panel.id}`, [
 				{
 					width: realWidth,
 					height: realHeight
 				}
 			]);
+			Draw.savePattern(`pattern_${panel.id}`);
 		});
-		Draw.clearOrigin();
+		Draw.setCanvas('canvas');
+		Draw.drawRect(0, 0, width, height, "#fff", true);
+		
+		// draw all panels
+		panels.forEach((panel) => {
+			let realWidth = panel.width;
+			let realHeight = panel.height;
+			
+			if (panel.scale) {
+				realWidth *= widthRatio;
+				realHeight *= heightRatio;
+			}
+			
+			Draw.drawPattern(
+				`pattern_${panel.id}`,
+				panel.x * widthRatio,
+				panel.y * heightRatio,
+				realWidth,
+				realHeight
+			);
+		});
 	}
 	
 	ipc.on('resize', (event, data) => {
