@@ -13,6 +13,7 @@ The Game object is where most of the important functions happen. Creation of win
 Creates and initializes an electron window.
 
 **Parameters**
+
 Parameter | required | description
 ---- | ---- | ----
 width | true | The width of the window
@@ -27,6 +28,7 @@ height | true | The height of the window
 Creates a panel with specific dimensions on the main window
 
 **Parameters**
+
 Parameter | required | description
 --- | --- | ---
 id | true | the ID of the panel
@@ -47,11 +49,13 @@ scale | false | boolean, indicates if panel scales as window size changes. Defau
 Registers a callback that is called every time the main loop runs
 
 **Parameters**
+
 Parameter | required | description
 --- | --- | ---
 cb | true | callback to call
 
 **Callback Parameters**
+
 The callback is called with these parameters
 Parameter | description
 --- | ---
@@ -65,12 +69,14 @@ tick | The current game tick
 Registers a callback for a specific canvas that is called every time that canvas runs.
 
 **Parameters**
+
 Parameter | required | description
 --- | --- | ---
 id | true | id of the canvas
 cb | true | callback function to call
 
 **Callback Parameters**
+
 The callback is called with these parameters
 Parameter | description
 --- | ---
@@ -84,6 +90,7 @@ bounds | an object containing width and height of the canvas
 Directs the system to load a plugin into the global scope for further use
 
 **Parameters**
+
 Parameter | required | description
 --- | --- | ---
 pluginName | true | the name of the plugin. Putting "std::" in the front tells the system to load a standard plugin bundled with GameEngine
@@ -94,6 +101,7 @@ pluginName | true | the name of the plugin. Putting "std::" in the front tells t
 Meant to be called from the plugin to initialize it and make it available to the game.
 
 **Parameters**
+
 Parameter | required | description
 --- | --- | ---
 name | true | the name that will be added to the global scope
