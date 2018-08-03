@@ -88,6 +88,15 @@
 				ctx.fillRect(0, 0, width, height);
 				//drawRect(ctx, { x1: 0, y1: 0, x2: 0 + data.width, y2: 0 + data.height, color: "#f00", fill: false});
 			}
+		} else if (data.type === "circle") {
+			const { x, y, radius, color, fill } = data;
+			ctx.strokeStyle = color;
+			ctx.fillStyle = color;
+			ctx.beginPath();
+			ctx.arc(x, y, radius, 0, 2 * Math.PI);
+			ctx.closePath();
+			if (fill) ctx.fill();
+			ctx.stroke();
 		}
 		ctx.restore();
 	})
@@ -118,7 +127,25 @@
 	
 	window.addEventListener("resize", resize);
 	canvas.addEventListener('click', (event) => {
-		console.log(event);
+		const { clientX, clientY } = event;
+		event.preventDefault();
+		
+		ipcRenderer.send('click', {
+			x: clientX, 
+			y: clientY,
+			mouse: 'left'
+		});
+	});
+	
+	canvas.addEventListener('contextmenu', (event) => {
+		const { clientX, clientY } = event;
+		event.preventDefault();
+		
+		ipcRenderer.send('click', {
+			x: clientX, 
+			y: clientY,
+			mouse: 'right'
+		});
 	});
 </script>
 </html>

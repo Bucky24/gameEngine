@@ -75,7 +75,11 @@ app.on('ready', () => {
 		draw: (id, cb) => {
 			registerEventHandler(`draw_${id}`, cb);
 		},
-		registerInputs: () => {},
+		registerInput: (type, canvas, cb) => {
+			const isMouse = Object.values(Mouse).includes(type);
+			const key = isMouse ? `${canvas}_${type}` : type;
+			registerEventHandler(key, cb);
+		},
 		loadPlugin: (pluginName) => {
 			if (pluginName.indexOf("std::") === 0) {
 				const realPlugin = pluginName.substring(5);
@@ -153,6 +157,17 @@ app.on('ready', () => {
 				type: 'savePattern',
 				id: patternId
 			});
+		},
+		circle: (x, y, radius, color, fill) => {
+			sendMessage('draw', {
+				canvas: activeCanvas,
+				type: 'circle',
+				x,
+				y,
+				radius,
+				color,
+				fill
+			});
 		}
 	};
 	
@@ -162,7 +177,8 @@ app.on('ready', () => {
 	};
 	
 	global.Mouse = {
-		ClickLeft: 0
+		ClickLeft: 'mouse_left',
+		ClickRight: 'mouse_right'
 	};
 	
 	const sendMessage = (event, data) => {
@@ -184,8 +200,12 @@ app.on('ready', () => {
 	};
 	
 	const triggerEvent = (event, data) => {
+		if (!Array.isArray(data)) {
+			data = [data];
+		}
 		if (eventFunctions[event]) {
 			eventFunctions[event].forEach((cb) => {
+				//console.log(cb, data);
 				try {
 					cb.apply(null, data);
 				} catch (error) {
@@ -213,6 +233,20 @@ app.on('ready', () => {
 			tick ++;
 			handleDrawing();
 		}, 100);
+	});
+	
+	ipc.on('click', (event, { x, y, mouse }) => {
+		let panelId = null;
+		panels.forEach((panel) => {
+			if (panel.x <= x && panel.x + panel.width >= x && panel.y <= y && panel.y + panel.height >= y) {
+				panelId = panel.id;
+			}
+		});
+		
+		if (panelId) {
+			const key = `${panelId}_mouse_${mouse}`;
+			triggerEvent(key, { x, y });
+		}
 	});
 	
 	const handleDrawing = () => {

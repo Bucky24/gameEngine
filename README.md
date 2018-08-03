@@ -39,6 +39,7 @@ height | true | height of panel
 scale | false | boolean, indicates if panel scales as window size changes. Defaults true
 
     Game.createCanvas({
+		id: 'mainCanvas',
 	    x: 100,
 	    y: 100,
 	    width: 50,
@@ -114,3 +115,31 @@ object | true | the object containing all the plugin's functions
     // in game, after loading plugin
 
     Map.action();
+	
+### debug
+Sets a debug flag. If the flag is set, the debug tools will show up in electron when the game is run.
+
+**Parameters**
+
+Parameter | required | description
+--- | --- | ---
+debug | true | boolean
+
+    Game.debug(true);
+	
+### registerInput
+Registers a game's interest in a particular input type.
+
+**Parameters**
+
+Parameter | required | description
+--- | --- | ---
+event | true | the event trigger
+canvas | false | canvas to listen for events on. Only applies for mouse events
+cb | true | callback to call
+
+Callback parameters will vary depending on event
+
+    Game.registerInput(Mouse.ClickLeft, 'mainCanvas', ({ x, y }) => {
+	    // do something
+    });

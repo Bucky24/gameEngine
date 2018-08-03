@@ -45,9 +45,3 @@ Game.mainLoop((tick) => {
 Game.draw("mainCanvas", (bounds) => {
 	Draw.drawRect(x, y, x+10, y+10, "#f00", true);
 });
-
-Game.registerInputs({
-	UP: Keyboard.Up,
-	DOWN: Keyboard.Down,
-	CLICK: Mouse.ClickLeft
-});
