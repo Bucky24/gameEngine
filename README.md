@@ -39,7 +39,7 @@ height | true | height of panel
 scale | false | boolean, indicates if panel scales as window size changes. Defaults true
 
     Game.createCanvas({
-		id: 'mainCanvas',
+	    id: 'mainCanvas',
 	    x: 100,
 	    y: 100,
 	    width: 50,
@@ -109,7 +109,7 @@ name | true | the name that will be added to the global scope
 object | true | the object containing all the plugin's functions
 
     Game.registerPlugin("Map", {
-    	action: () => {}
+        action: () => {}
     });
 
     // in game, after loading plugin
