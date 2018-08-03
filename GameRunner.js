@@ -34,7 +34,7 @@ app.on('ready', () => {
 		debug: (debug) => {
 			devTools = debug;
 		},
-		createWindow: ({ x, y, width, height }) => {
+		createWindow: ({ width, height }) => {
 			const useWidth = devTools ? width + 500 : width;
 			mainWindow = new BrowserWindow({
 				height,
