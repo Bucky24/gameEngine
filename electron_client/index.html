@@ -97,6 +97,11 @@
 			ctx.closePath();
 			if (fill) ctx.fill();
 			ctx.stroke();
+		} else if (data.type === "text") {
+			const { x, y, text, color, font } = data;
+			ctx.font = font;
+			ctx.fillStyle = color;
+			ctx.fillText(text,x,y);
 		}
 		ctx.restore();
 	})
@@ -147,5 +152,27 @@
 			mouse: 'right'
 		});
 	});
+	
+	window.addEventListener('keydown', (e) => {
+		const char = e.char || e.key;
+	    const code = e.keyCode ? e.keyCode : e.which;
+		ipcRenderer.send('key', {
+			code,
+			char,
+			evnt: 'down'
+		});
+	});
+	
+	window.addEventListener('keyup', (e) => {
+		const char = e.char || e.key;
+	    const code = e.keyCode ? e.keyCode : e.which;
+		ipcRenderer.send('key', {
+			code,
+			char,
+			evnt: 'up'
+		});
+	});
+	
+	
 </script>
 </html>

@@ -168,13 +168,33 @@ app.on('ready', () => {
 				color,
 				fill
 			});
+		},
+		text: (x, y, text, color, font) => {
+			sendMessage('draw', {
+				canvas: activeCanvas,
+				type: 'text',
+				x,
+				y,
+				text,
+				color,
+				font
+			});
 		}
 	};
 	
-	global.Keyboard = {
-		Up: 0,
-		Down: 0
-	};
+	const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+		'abcdefghijklmnopqrstuvwxyz' +
+		'1234567890-=[]\;\',./' +
+		'!@#$%^&*()_+{}|:"<>?"' + 
+		' '.split('');
+		
+	const specialKeys = ['UP', 'DOWN', 'LEFT', 'RIGHT', 'BACKSPACE', 'TEXT'];
+	
+	global.Keyboard = {};
+	
+	specialKeys.forEach((key) => {
+		global.Keyboard[key] = `keydown_${key}`;
+	})
 	
 	global.Mouse = {
 		ClickLeft: 'mouse_left',
@@ -246,6 +266,16 @@ app.on('ready', () => {
 		if (panelId) {
 			const key = `${panelId}_mouse_${mouse}`;
 			triggerEvent(key, { x, y });
+		}
+	});
+	
+	ipc.on('key', (event, { code, char, evnt }) => {
+		if (evnt === 'down') {
+			if (alphabet.includes(char)) {
+				triggerEvent(Keyboard.TEXT, { keyChar: char });
+			} else {
+				triggerEvent(`keydown_${char.toUpperCase()}`);
+			}
 		}
 	});
 	

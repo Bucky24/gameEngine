@@ -12,6 +12,7 @@ The Game object is where most of the important functions happen. Creation of win
 ### createWindow
 Creates and initializes an electron window.
 
+
 **Parameters**
 
 Parameter | required | description
@@ -139,6 +140,12 @@ canvas | false | canvas to listen for events on. Only applies for mouse events
 cb | true | callback to call
 
 Callback parameters will vary depending on event
+
+Event | parameter | description
+--- | --- | ---
+Keyboard.TEXT | keyChar | the character of the key typed
+Mouse.* | x | the x position the mouse was at for the event
+| y | the y position the mouse was at for the event
 
     Game.registerInput(Mouse.ClickLeft, 'mainCanvas', ({ x, y }) => {
 	    // do something
