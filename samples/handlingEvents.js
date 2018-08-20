@@ -15,11 +15,22 @@ Game.createCanvas({
 
 let mx = 0;
 let my = 0;
+let mouseDown = false;
 let text = '';
 
+Game.registerInput(Mouse.PressLeft, 'mainCanvas', ({ x, y }) => {
+	mouseDown = true;
+});
+
 Game.registerInput(Mouse.ClickLeft, 'mainCanvas', ({ x, y }) => {
-	mx = x;
-	my = y;
+	mouseDown = false;
+});
+
+Game.registerInput(Mouse.Move, 'mainCanvas', ({ x, y }) => {
+	if (mouseDown) {
+		mx = x;
+		my = y;
+	}
 });
 
 Game.registerInput(Keyboard.TEXT, null, ({ keyChar }) => {

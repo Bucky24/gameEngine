@@ -198,7 +198,10 @@ app.on('ready', () => {
 	
 	global.Mouse = {
 		ClickLeft: 'mouse_left',
-		ClickRight: 'mouse_right'
+		ClickRight: 'mouse_right',
+		PressLeft: 'mouse_left_press',
+		PressRight: 'mouse_right_press',
+		Move: 'mouse_move'
 	};
 	
 	const sendMessage = (event, data) => {
@@ -253,6 +256,32 @@ app.on('ready', () => {
 			tick ++;
 			handleDrawing();
 		}, 100);
+	});
+	
+	const mouseEvent = (x, y, event) => {
+		let panelId = null;
+		panels.forEach((panel) => {
+			if (panel.x <= x && panel.x + panel.width >= x && panel.y <= y && panel.y + panel.height >= y) {
+				panelId = panel.id;
+			}
+		});
+		
+		if (panelId) {
+			const key = `${panelId}_${event}`;
+			triggerEvent(key, { x, y });
+		}
+	}
+	
+	ipc.on('click', (event, { x, y, mouse }) => {
+		mouseEvent(x, y, `mouse_${mouse}`);
+	});
+	
+	ipc.on('press', (event, { x, y, mouse }) => {
+		mouseEvent(x, y, `mouse_${mouse}_press`);
+	});
+	
+	ipc.on('move', (event, { x, y }) => {
+		mouseEvent(x, y, `mouse_move`);
 	});
 	
 	ipc.on('click', (event, { x, y, mouse }) => {

@@ -157,6 +157,9 @@ Event List:
 	Keyboard.RIGHT
 	Mouse.ClickLeft
 	Mouse.ClickRight
+	Mouse.PressLeft
+	Mouse.PressRight
+	Mouse.Move
 
     Game.registerInput(Mouse.ClickLeft, 'mainCanvas', ({ x, y }) => {
 	    // do something

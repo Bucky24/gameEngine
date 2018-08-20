@@ -131,6 +131,7 @@
 	}
 	
 	window.addEventListener("resize", resize);
+	
 	canvas.addEventListener('click', (event) => {
 		const { clientX, clientY } = event;
 		event.preventDefault();
@@ -152,6 +153,25 @@
 			mouse: 'right'
 		});
 	});
+	
+	const buttons = ['left', 'middle', 'right'];
+	
+	canvas.addEventListener('mousedown', (event) => {
+		const { clientX, clientY, button } = event;
+		ipcRenderer.send('press', {
+			x: clientX,
+			y: clientY,
+			mouse: buttons[button]
+		});
+	});
+	
+	canvas.addEventListener('mousemove', (event) => {
+		const { clientX, clientY } = event;
+		ipcRenderer.send('move', {
+			x: clientX,
+			y: clientY
+		});
+	})
 	
 	window.addEventListener('keydown', (e) => {
 		const char = e.char || e.key;
