@@ -145,7 +145,11 @@ Event | parameter | description
 --- | --- | ---
 Keyboard.TEXT | keyChar | the character of the key typed
 Mouse.* | x | the x position the mouse was at for the event
+<<<<<<< HEAD
  | y | the y position the mouse was at for the event
+=======
+"" | y | the y position the mouse was at for the event
+>>>>>>> f4b6f14bbffa6059f7f8eef3a480568e54546a8d
 
     Game.registerInput(Mouse.ClickLeft, 'mainCanvas', ({ x, y }) => {
 	    // do something
