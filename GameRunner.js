@@ -188,9 +188,14 @@ app.on('ready', () => {
 		'!@#$%^&*()_+{}|:"<>?"' + 
 		' '.split('');
 		
-	const specialKeys = ['UP', 'DOWN', 'LEFT', 'RIGHT', 'BACKSPACE', 'TEXT'];
+	const specialKeys = ['BACKSPACE', 'TEXT'];
 	
-	global.Keyboard = {};
+	global.Keyboard = {
+		UP: 'keydown_ARROWUP',
+		DOWN: 'keydown_ARROWDOWN',
+		RIGHT: 'keydown_ARROWRIGHT',
+		LEFT: 'keydown_ARROWLEFT'
+	};
 	
 	specialKeys.forEach((key) => {
 		global.Keyboard[key] = `keydown_${key}`;
@@ -303,6 +308,7 @@ app.on('ready', () => {
 			if (alphabet.includes(char)) {
 				triggerEvent(Keyboard.TEXT, { keyChar: char });
 			} else {
+				//console.log(`keydown_${char.toUpperCase()}`);
 				triggerEvent(`keydown_${char.toUpperCase()}`);
 			}
 		}

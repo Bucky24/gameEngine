@@ -41,6 +41,30 @@ Game.registerInput(Keyboard.BACKSPACE, null, () => {
 	text = text.substring(0, text.length-1);
 });
 
+Game.registerInput(Keyboard.UP, null, () => {
+	if (!mouseDown) {
+		my -= 10;
+	}
+});
+
+Game.registerInput(Keyboard.DOWN, null, () => {
+	if (!mouseDown) {
+		my += 10;
+	}
+});
+
+Game.registerInput(Keyboard.LEFT, null, () => {
+	if (!mouseDown) {
+		mx -= 10;
+	}
+});
+
+Game.registerInput(Keyboard.RIGHT, null, () => {
+	if (!mouseDown) {
+		mx += 10;
+	}
+});
+
 Game.draw('mainCanvas', () => {
 	Draw.circle(mx, my, 5, "#f00", true);
 	Draw.text(40, 40, `text: ${text}`, "#000", "20px Arial");

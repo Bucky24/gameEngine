@@ -1,6 +1,6 @@
 {
 	"name": "gameEngine",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "A game engine!",
 	"scripts": {
 		"GameRunner": "./runGame.sh"
