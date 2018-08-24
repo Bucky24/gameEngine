@@ -164,3 +164,72 @@ Event List:
     Game.registerInput(Mouse.ClickLeft, 'mainCanvas', ({ x, y }) => {
 	    // do something
     });
+
+## Draw
+
+The Draw object is responsible for providing common drawing functionality for canvas. It is only available from inside a Game.draw callback.
+
+### drawRect
+
+Draws a rectangle with the given color between two points.
+
+**Parameters**
+
+Parameter | required | description
+--- | --- | ---
+x | true | start x
+y | true | start y
+x2 | true | end x
+y2 | true | end y
+color | true | html color code
+fill | true | boolean indicating if rectangle is outline or filled
+
+    Draw.drawRect(0, 0, 100, 100, "#F0F0F0", false);
+
+### drawLine
+
+Draws a line between two points
+
+**Parameters**
+
+Parameter | required | description
+--- | --- | ---
+x | true | start x
+y | true | start y
+x2 | true | end x
+y2 | true | end y
+color | true | html color code
+
+    Draw.drawLine(0, 0, 100, "#F0F0F0");
+
+### circle
+
+Draws a circle of a given radius at a point
+
+**Parameters**
+
+Parameter | required | description
+--- | --- | ---
+x | true | center x
+y | true | center y
+radius | true | radius of circle
+color | true | html color code
+fill | true | boolean indicating if circle is outline or filled
+
+    Draw.circle(100, 100, 10, "#F0F0F0", false);
+
+### text
+
+Draws text starting at a given position with a font and color
+
+**Parameters**
+
+Parameter | required | description
+--- | --- | ---
+x | true | center x
+y | true | center y
+text | true | string to draw
+color | true | html color code
+font | true | font to use
+
+    Draw.text(100, 100, "Some text", "#F0F0F0", "20 px Arial");
