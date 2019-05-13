@@ -233,3 +233,21 @@ color | true | html color code
 font | true | font to use
 
     Draw.text(100, 100, "Some text", "#F0F0F0", "20 px Arial");
+
+### shape
+
+Draws a shape from given coordinate pairs
+
+**Parameters**
+
+Parameter | required | description
+--- | --- | ---
+shape | true | an array of objects containing x and y (there must be at least 3 points)
+color | true | html color code
+fill | true | boolean indicating if shape is outline or filled
+
+    Draw.shape([
+		{ x: 50, y: 50 },
+		{ x: 25, y: 25 },
+		{ x: 100, y: 105 }
+	], "#ff0000", false);

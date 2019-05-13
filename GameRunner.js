@@ -116,11 +116,25 @@ app.on('ready', () => {
 		drawRect: (x, y, x2, y2, color, fill) => {
 			sendMessage('draw', {
 				canvas: activeCanvas,
-				type: 'rect',
-				x1: x * useWR + originX * useWR,
-				y1: y * useHR + originY * useHR,
-				x2: x2 * useWR+ originX * useWR,
-				y2: y2 * useHR + originY * useHR,
+				type: 'shape',
+				shape: [
+					{
+						x: x * useWR + originX * useWR,
+						y: y * useHR + originY * useHR
+					},
+					{
+						x: x * useWR + originX * useWR,
+						y: y2 * useHR + originY * useHR
+					},
+					{
+						x: x2 * useWR+ originX * useWR,
+						y: y2 * useHR + originY * useHR
+					},
+					{
+						x: x2 * useWR+ originX * useWR,
+						y: y * useHR + originY * useHR
+					}
+				],
 				color,
 				fill
 			});
@@ -178,6 +192,22 @@ app.on('ready', () => {
 				text,
 				color,
 				font
+			});
+		},
+		drawShape: (shape, color, fill) => {
+			// filter the points
+			const newShape = shape.map((point) => {
+				return {
+					x: point.x * useWR + originX * useWR,
+					y: point.y * useHR + originY * useHR
+				};
+			});
+			sendMessage('draw', {
+				canvas: activeCanvas,
+				type: 'shape',
+				shape: newShape,
+				color,
+				fill
 			});
 		}
 	};
