@@ -283,3 +283,20 @@ fill | true | boolean indicating if shape is outline or filled
 		{ x: 25, y: 25 },
 		{ x: 100, y: 105 }
 	], "#ff0000", false);
+
+## Utils
+
+The Utils object is general utilities that can be useful for game creation.
+
+### random
+
+Generates a random integer between two given integers
+
+**Parameters**
+
+Parameter | required | description
+--- | --- | ---
+min | true | min value (inclusive)
+max | true | max value (exclusive)
+
+    Utils.random(5, 10); // returns number between 5 and 9
