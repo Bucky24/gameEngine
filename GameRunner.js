@@ -290,7 +290,7 @@ app.on('ready', () => {
 			}
 			tick ++;
 			handleDrawing();
-		}, 100);
+		}, 10);
 	});
 	
 	const mouseEvent = (x, y, event) => {
