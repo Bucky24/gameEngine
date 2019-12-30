@@ -59,6 +59,7 @@ cb | true | callback to call
 **Callback Parameters**
 
 The callback is called with these parameters
+
 Parameter | description
 --- | ---
 tick | The current game tick
@@ -80,6 +81,7 @@ cb | true | callback function to call
 **Callback Parameters**
 
 The callback is called with these parameters
+
 Parameter | description
 --- | ---
 bounds | an object containing width and height of the canvas
