@@ -3,7 +3,37 @@ A game engine!
 
 This engine is designed for creating very quick prototypes without dealing with a lot of boilerplate code.
 
-List of functions:
+# Quick Start
+
+First install the library
+
+	npm install https://github.com/Bucky24/gameEngine.git
+
+Then create a script, main.js, with the following content:
+
+    Game.createWindow({
+		width: 500,
+		height: 500
+	});
+	Game.createCanvas({
+		id: 'canvas',
+		x: 0,
+		y: 0,
+		width: 500,
+		height: 500
+	});
+	
+	Game.draw('canvas', (bounds) => {
+		Draw.drawRect(100, 100, 300, 300, "#f00", true);
+	});
+
+Then in your package.json, add the following:
+
+    "scripts": {
+		"start": "GameRunner ./main.js"
+	}
+
+# Objects
 
 ## Game
 
