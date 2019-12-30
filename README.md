@@ -300,3 +300,53 @@ min | true | min value (inclusive)
 max | true | max value (exclusive)
 
     Utils.random(5, 10); // returns number between 5 and 9
+
+### pointCollision
+
+Takes a rectangle and a point, and returns a boolean indicating if the point is inside the rectangle
+
+**Parameters**
+
+Parameter | required | description
+--- | --- | ---
+rect1 | true | rectangle (x1, y1, x2, y2) to check
+point | true | point (x, y) to check
+
+    Utils.pointCollision(
+		{
+			x1: 50,
+			y1: 50,
+			x2: 400,
+			y2: 400
+		},
+		{
+			x: 100,
+			y: 100
+		}	
+	);
+
+### rectangleCollision
+
+Takes two rectangles, and returns a boolean indicating if they intersect or not. This function can be a bit expensive.
+
+**Parameters**
+
+Parameter | required | description
+--- | --- | ---
+rect1 | true | rectangle (x1, y1, x2, y2) to check
+rect2 | true | second rectangle (x1, y1, x2, y2) to check
+
+    Utils.rectangleCollision(
+		{
+			x1: 50,
+			y1: 50,
+			x2: 400,
+			y2: 400
+		},
+		{
+			x1: 100,
+			y1: 100,
+			x2: 200,
+			y2: 200
+		}	
+	);

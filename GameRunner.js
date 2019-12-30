@@ -245,6 +245,43 @@ app.on('ready', () => {
 		    min = Math.ceil(min);
 		    max = Math.floor(max);
 		    return Math.floor(Math.random() * (max - min)) + min;
+		},
+		pointCollision: (rect, point) => {
+			const { x1: rx1, y1: ry1, x2: rx2, y2: ry2 } = rect;
+			const { x: px, y: py } = point;
+			
+			const maxX = Math.max(rx1, rx2);
+			const minX = Math.min(rx1, rx2);
+			const maxY = Math.max(ry1, ry2);
+			const minY = Math.min(ry1, ry2);
+			
+			const result = (px >= minX && px <= maxX && py >= minY && py <= maxY);
+			return result;
+		},
+		rectangleCollision: (rect1, rect2) => {
+			const { x1: x11, y1: y11, x2: x12, y2: y12 } = rect1;
+			const { x1: x21, y1: y21, x2: x22, y2: y22 } = rect2;
+			
+			// build the center of the rectangles
+			const cx1 = Math.min(x11, x12) + (Math.max(x11, x12) - Math.min(x11, x12))/2;
+			const cy1 = Math.min(y11, y12) + (Math.max(y11, y12) - Math.min(y11, y12))/2;
+			const cx2 = Math.min(x21, x22) + (Math.max(x21, x22) - Math.min(x21, x22))/2;
+			const cy2 = Math.min(y21, y22) + (Math.max(y21, y22) - Math.min(y21, y22))/2;
+
+			return (
+				Utils.pointCollision(rect1, { x: x21, y: y21 }) ||
+				Utils.pointCollision(rect1, { x: x21, y: y22 }) ||
+				Utils.pointCollision(rect1, { x: x22, y: y22 }) ||
+				Utils.pointCollision(rect1, { x: x22, y: y21 }) ||
+				// second rectangle
+				Utils.pointCollision(rect2, { x: x11, y: y11 }) ||
+				Utils.pointCollision(rect2, { x: x11, y: y12 }) ||
+				Utils.pointCollision(rect2, { x: x12, y: y12 }) ||
+				Utils.pointCollision(rect2, { x: x12, y: y11 }) ||
+				// also check center points in case two rectangles are through each other
+				Utils.pointCollision(rect1, { x: cx2, y: cy2 }) || 
+				Utils.pointCollision(rect2, { x: cx1, y: cy1 })
+			);
 		}
 	}
 	
