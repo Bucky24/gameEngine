@@ -38,7 +38,11 @@ app.on('ready', () => {
 			const useWidth = devTools ? width + 500 : width;
 			mainWindow = new BrowserWindow({
 				height,
-				width: useWidth
+				width: useWidth,
+				webPreferences: {
+					nodeIntegration: true,
+       				contextIsolation: false,
+				},
 			});
 
 			const url = require('url').format({

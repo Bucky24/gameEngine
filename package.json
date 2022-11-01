@@ -13,6 +13,6 @@
 		"GameRunner": "./runGame.sh"
 	},
 	"dependencies": {
-		"electron": "15.5.5"
+		"electron": "21.2.1"
 	}
 }
