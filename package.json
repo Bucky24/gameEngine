@@ -1,18 +1,16 @@
 {
-	"name": "gameEngine",
-	"version": "0.0.5",
-	"description": "A game engine!",
-	"scripts": {
-		"GameRunner": "./runGame.sh"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/Bucky24/gameEngine.git"
-	},
-	"bin": {
-		"GameRunner": "./runGame.sh"
-	},
-	"dependencies": {
-		"electron": "21.2.1"
-	}
+  "name": "gameEngine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node ./server/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
 }
