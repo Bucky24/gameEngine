@@ -1,6 +1,7 @@
 import { DataStore } from "./dataStore.js";
 import { GameObject } from "./gameObject.js";
 import { Renderers } from "./constants.js";
+import { line } from './draw.js'
 
 function init(params) {
     DataStore.init();
@@ -29,6 +30,20 @@ function update() {
     for (const obj of objects) {
         obj.update();
     }
+
+    render();
+}
+
+function render() {
+    const objects = DataStore.get('objects', DataStore.GLOBAL, []);
+    const canvas = DataStore.get('canvas', DataStore.GLOBAL);
+    const ctx = canvas.getContext("2d");
+
+    console.log(objects);
+
+    for (const obj of objects) {
+        obj.render(ctx);
+    }
 }
 
 function register(obj) {
@@ -40,6 +55,9 @@ window.Engine = {
     GameObject,
     Constants: {
         Renderers,
+    },
+    Draw: {
+        line,
     },
     init,
     register,

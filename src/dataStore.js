@@ -20,7 +20,7 @@ export class DataStore {
             DataStore.data[scope][key] = [];
         }
 
-        DataStore.data[scope][key].push(key);
+        DataStore.data[scope][key].push(value);
     }
 
     static get(key, scope, def = null) {
@@ -28,7 +28,7 @@ export class DataStore {
            return null;
         }
 
-        return !DataStore.data[scope][key] || def;
+        return DataStore.data[scope][key] || def;
     }
 }
 

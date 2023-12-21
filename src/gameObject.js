@@ -1,9 +1,11 @@
 export class GameObject {
-    constructor() {
-        this._renderers = {};
-    }
+    constructor() {}
 
     update() {
+        // noop
+    }
+
+    render() {
         // noop
     }
 }
