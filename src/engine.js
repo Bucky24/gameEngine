@@ -5,7 +5,7 @@ import { Renderers } from "./constants.js";
 function init(params) {
     DataStore.init();
 
-    const { type } = params;
+    const { type, fps } = params;
 
     if (type === Renderers.TWOD) {
         const { canvas } = params;
@@ -18,6 +18,21 @@ function init(params) {
 
         DataStore.set('canvas', canvasObj, DataStore.GLOBAL);
     }
+
+    const timeout = setTimeout(update, 1000 / fps);
+    DataStore.set('update_timeout', timeout, DataStore.GLOBAL);
+}
+
+function update() {
+    const objects = DataStore.get('objects', DataStore.GLOBAL, []);
+
+    for (const obj of objects) {
+        obj.update();
+    }
+}
+
+function register(obj) {
+    DataStore.push('objects', obj, DataStore.GLOBAL);
 }
 
 window.Engine = {
@@ -27,4 +42,5 @@ window.Engine = {
         Renderers,
     },
     init,
+    register,
 };
