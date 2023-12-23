@@ -1,10 +1,14 @@
 import { DataStore } from "./dataStore.js";
 import { GameObject } from "./gameObject.js";
-import { Renderers } from "./constants.js";
-import { line } from './draw.js'
+import { Renderers, SystemEvents, Keys } from "./constants.js";
+import { line, rect } from './draw.js'
+import { Input } from './input.js';
+import { EventBus } from "./eventBus.js";
 
 function init(params) {
     DataStore.init();
+    Input.init();
+    EventBus.init();
 
     const { type, fps } = params;
 
@@ -20,8 +24,8 @@ function init(params) {
         DataStore.set('canvas', canvasObj, DataStore.GLOBAL);
     }
 
-    const timeout = setTimeout(update, 1000 / fps);
-    DataStore.set('update_timeout', timeout, DataStore.GLOBAL);
+    const interval = setInterval(update, 1000 / fps);
+    DataStore.set('updatetinterval', interval, DataStore.GLOBAL);
 }
 
 function update() {
@@ -39,7 +43,7 @@ function render() {
     const canvas = DataStore.get('canvas', DataStore.GLOBAL);
     const ctx = canvas.getContext("2d");
 
-    console.log(objects);
+    rect(ctx, 0, 0, canvas.width, canvas.height, "#fff", true);
 
     for (const obj of objects) {
         obj.render(ctx);
@@ -53,8 +57,11 @@ function register(obj) {
 window.Engine = {
     DataStore,
     GameObject,
+    EventBus,
     Constants: {
         Renderers,
+        SystemEvents,
+        Keys,
     },
     Draw: {
         line,
