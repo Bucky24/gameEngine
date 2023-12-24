@@ -1,5 +1,6 @@
 import { DataStore } from "./dataStore.js";
 import { GameObject } from "./gameObject.js";
+import { VisibleObject } from "./visibleObject.js";
 import { Renderers, SystemEvents, Keys } from "./constants.js";
 import { line, rect } from './draw.js'
 import { Input } from './input.js';
@@ -50,7 +51,9 @@ function render() {
     rect(ctx, 0, 0, canvas.width, canvas.height, "#fff", true);
 
     for (const obj of objects) {
-        obj.render(ctx);
+        if (obj instanceof VisibleObject) {
+            obj.render(ctx);
+        }
     }
 }
 
@@ -61,6 +64,7 @@ function register(obj) {
 window.Engine = {
     DataStore,
     GameObject,
+    VisibleObject,
     EventBus,
     Constants: {
         Renderers,

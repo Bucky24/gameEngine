@@ -1,10 +1,7 @@
 import { EventBus } from "./eventBus.js";
 
 export class GameObject {
-    constructor(params) {
-        const { x, y, ...data } = params;
-        this.x = x || 0;
-        this.y = y || 0;
+    constructor(data = {}) {
         this._eventListeners = [];
 
         this.onCreate(data);
@@ -20,10 +17,6 @@ export class GameObject {
     }
 
     update() {
-        // noop
-    }
-
-    render() {
         // noop
     }
 }

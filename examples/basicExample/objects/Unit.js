@@ -1,27 +1,45 @@
-class Unit extends Engine.GameObject {
+class Unit extends Engine.VisibleObject {
     onCreate() {
         this.xOff = 0;
+        this.yOff = 0;
 
         this.listen(Engine.Constants.SystemEvents.KEY_DOWN, (key) => {
-            if (key === Engine.Constants.Keys.ArrowRight) {
-                this.xOff = 5;
-            } else if (key === Engine.Constants.Keys.ArrowLeft) {
-                this.xOff = -5;
+            switch (key) {
+                case Engine.Constants.Keys.ArrowRight:
+                    this.xOff = 5;
+                    break;
+                case Engine.Constants.Keys.ArrowLeft:
+                    this.xOff = -5;
+                    break;
+                case Engine.Constants.Keys.ArrowUp:
+                    this.yOff = -5;
+                    break;
+                case Engine.Constants.Keys.ArrowDown:
+                    this.yOff = 5;
+                    break;
             }
         });
 
         this.listen(Engine.Constants.SystemEvents.KEY_UP, (key) => {
-            if (key === Engine.Constants.Keys.ArrowRight || key === Engine.Constants.Keys.ArrowLeft) {
-                this.xOff = 0;
+            switch (key) {
+                case Engine.Constants.Keys.ArrowRight:
+                case Engine.Constants.Keys.ArrowLeft:
+                    this.xOff = 0;
+                    break;
+                case Engine.Constants.Keys.ArrowUp:
+                case Engine.Constants.Keys.ArrowDown:
+                    this.yOff = 0;
+                    break;
             }
         });
     }
 
     update() {
         this.x += this.xOff;
+        this.y += this.yOff;
     }
 
     render(context) {
-        Engine.Draw.line(context, this.x, 0, this.x + 100, 100, "#000");
+        Engine.Draw.line(context, this.x, this.y, this.x + 100, this.y + 100, "#000");
     }
 }
