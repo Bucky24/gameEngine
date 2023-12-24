@@ -1,13 +1,13 @@
 import { EventBus } from "./eventBus.js";
-import { SystemEvents } from "./constants.js";
 
 export class GameObject {
-    constructor(x, y) {
+    constructor(params) {
+        const { x, y, ...data } = params;
         this.x = x || 0;
         this.y = y || 0;
         this._eventListeners = [];
 
-        this.onCreate();
+        this.onCreate(data);
     }
 
     onCreate() {

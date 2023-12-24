@@ -22,6 +22,10 @@ function init(params) {
         }
 
         DataStore.set('canvas', canvasObj, DataStore.GLOBAL);
+
+        Input.init(canvasObj);
+    } else {
+        Input.init();
     }
 
     const interval = setInterval(update, 1000 / fps);
