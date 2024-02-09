@@ -40,6 +40,9 @@ class Unit extends Engine.VisibleObject {
     }
 
     render(context) {
-        Engine.Draw.line(context, this.x, this.y, this.x + 100, this.y + 100, "#000");
+        Engine.Draw.line(context, this.x, this.y+this.height/2, this.x + this.width/2, this.y, "#000");
+        Engine.Draw.line(context, this.x+this.width/2, this.y, this.x + this.width, this.y+this.height/2, "#000");
+        Engine.Draw.line(context, this.x+this.width, this.y+this.height/2, this.x + this.width/2, this.y+this.height, "#000");
+        Engine.Draw.line(context, this.x+this.width/2, this.y+this.height, this.x, this.y+this.height/2, "#000");
     }
 }

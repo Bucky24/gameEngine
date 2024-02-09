@@ -4,6 +4,6 @@ Engine.init({
     canvas: 'canvas',
 });
 
-const unit = new Unit();
+const unit = new Unit({ width: 100, height: 100 });
 
 Engine.register(unit);
